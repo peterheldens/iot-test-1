@@ -580,11 +580,11 @@ namespace speedometer {
     //% group="Setup"
     public update () {
         if (this.isRunning()) {
-            this.updateRadius()
-            this.updateSegment()
+            //this.updateRadius()
+            //this.updateSegment()
             this.updateRotations()
-            this.updateDistance()
-            this.updateSpeed() //frequency of 1 on avrWindow milliseconds
+            //this.updateDistance()
+            //this.updateSpeed() //frequency of 1 on avrWindow milliseconds
             //this.updateGraph()
         }
     }
