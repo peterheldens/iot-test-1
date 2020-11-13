@@ -1152,43 +1152,8 @@ namespace IoT {
         }
     }
 
-        function gatewaySubmitPropertyOld1 () {
-        // gateway to submit property
-        // send device property value pairs to the cloud
-        // value pair: (name, value) = (propSting, propValue)
-        if (deviceMode==Mode.Gateway) { 
-            if ((doProperty) && (propString.length > 0)) {
-                const sn = control.deviceSerialNumber()
-                gatewaySendProperty(sn,"id", microbit_ID)
-                for (let i=0; i<propString.length;i++) {
-                    const s=propString[i]
-                    const v=propValue[i]
-                    gatewaySendProperty(sn,s, v)
-                }   
-                gatewaySendProperty(sn,"eom", 1)
-            }
-        }
-    }
 
-    function gatewaySubmitPropertyOld () {
-        // gateway to submit property
-        // send device property value pairs to the cloud
-        // value pair: (name, value) = (propSting, propValue)
-        if (deviceMode==Mode.Gateway) { 
-            if ((doProperty) && (propString.length > 0)) {
-                const sn = control.deviceSerialNumber()
-                gatewaySendProperty(sn,"id", microbit_ID)
-                while (propString.length > 0) {
-                    const s=propString.pop()
-                    const v=propValue.pop()
-                    gatewaySendProperty(sn,s, v)
-                }   
-                gatewaySendProperty(sn,"eom", 1)
-            }
-        }
-    }
-
-
+ 
     function delMicrobit (sn: number) {
         if (deviceMode==Mode.Gateway) {
             //TODO - continue here ...
@@ -1259,41 +1224,6 @@ namespace IoT {
                 setTimerRadioRequest(10000)  //TO reduce this
                 basic.pause(500)
                 */
-            }
-        }
-    }
-
-function addMicrobitOld (sn: number) {
-        // add EndPoint device to the device registrar
-        if (deviceMode==Mode.Gateway) {
-            const id = device_registrar.indexOf(sn)
-            debug("addMicrobit("+sn+")")
-            debug("id",id)
-            if (id < 0) {
-                debug("id < 0")
-                // device does not exist yet, add new device
-                device_registrar.push(sn)
-                device_telemetry.push(init_telemetry)
-                device_property.push(init_property)
-                device_log.push(init_log)
-                radio.sendString("sid(" + device_registrar.indexOf(sn) + "," + sn + ")")
-                //radioSendMessage(serialRead)
-                debug("sid(" + device_registrar.indexOf(sn) + "," + sn + ")")
-                setTimerRadioRequest(1000)
-                setTimerGatewayRequest(1000)
-                basic.pause(500)  //TODO dit kan weg?
-            } else {
-                debug("id >= 0") 
-                
-                // device exists already, device_telemetry=null, reactivate it by setting device_telemetry to "{"
-                device_telemetry[id] = init_telemetry
-                //debug("init_telemetry["+id+"] = "+device_telemetry[id] )
-                debug("sid(" + device_registrar.indexOf(sn) + "," + sn + ")")
-                radio.sendString("sid(" + device_registrar.indexOf(sn) + "," + sn + ")")
-                //radioSendMessage(serialRead)
-                debug("sid(" + device_registrar.indexOf(sn) + "," + sn + ")")
-                setTimerRadioRequest(10000)
-                basic.pause(500)
             }
         }
     }
@@ -1620,37 +1550,6 @@ function addMicrobitOld (sn: number) {
                 for (let i=0; i<propertyArray.length;i++) { 
                     const p=propertyArray[i]
                     radio.sendValue(p.name, p.value)
-                    basic.pause(delay)
-                }   
-            }
-        }
-    }
-
-        function leafSendPropertyOld1 () {
-        // send device property value pairs to the cloud
-        // value pair: (name, value) = (propSting, propValue)
-        if (deviceMode==Mode.EndPoint) { 
-            if (doProperty) {
-                radio.sendValue("lid", identity)
-                for (let i=0; i<propString.length;i++) {
-                    const s=propString[i]
-                    const v=propValue[i]
-                    radio.sendValue(s, v)
-                    basic.pause(delay)
-                }   
-            }
-        }
-    }
-
-        function leafSendPropertyOld () {
-        // send device property value pairs to the cloud
-        // value pair: (name, value) = (propSting, propValue)
-        if (deviceMode==Mode.EndPoint) { 
-            if (doProperty) {
-                while (propString.length > 0) {
-                    const s=propString.pop()
-                    const v=propValue.pop()
-                    radio.sendValue(s, v)
                     basic.pause(delay)
                 }   
             }
